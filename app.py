@@ -19,8 +19,9 @@ def page1():
     
     
     return render_template('base.html',
-                           graphJSON = base_plot,
+                           title = "Page1",
                            header = header,
+                           graphJSON = base_plot,
                            description = description
                            )
 
@@ -34,8 +35,9 @@ def page2():
     
     
     return render_template('base.html',
-                           graphJSON = base_plot,
+                           title = "Page2",
                            header = header,
+                           graphJSON = base_plot,
                            description = description
                            )
 

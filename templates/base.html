@@ -1,6 +1,7 @@
-<!doctype html>
-<html>
-<head>
+{% extends "layout.html" %}
+
+
+{% block head %}
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -19,25 +20,26 @@
             });
         }
     </script>
-</head>
+{% endblock %}
 
-<body style="font-family:arial, sans-serif">
+{% block body%}
     <h1>{{header}}</h1>
     <h4><a href="/">Return to index page</a></h4>
-    
+
     <h2>Choose your country</h2>
     <p>Make sure you spell it correctly with capital letter(s), e.g. United Kingdom</p>
     <input type="text" id="fname" name="fname" onchange="getCountry(this.value)">
     <div id="chart" class="chart"></div>
 
     <div>{{description}}</div>
-</body>
+{% endblock %}
 
-<script>
+
+{% block script%}
     var d = {{ graphJSON | safe }};
     Plotly.newPlot('chart', d, {});
 
     // schedule the first invocation:
     //setTimeout(getCountry, 1000);
-</script>
-</html>
+{% endblock %}
+

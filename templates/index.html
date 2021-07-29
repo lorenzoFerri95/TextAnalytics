@@ -1,15 +1,13 @@
-<!doctype html>
-<html>
+{% extends "layout.html" %}
 
-<body style="font-family:arial, sans-serif">
+
+{% block body %}
     <h1 style="background:lightblue;padding:10px">
             Plotly Chart Demo
     </h1>
-    
+
     <p>Click to see charts on different pages</p>
-    
+
     <h1><a href="page1">GDP in Europe</a></h1>
     <h1><a href="page2">Vegetables in Europe</a></h1>
-
-</body>
-</html>
+{% endblock %}
