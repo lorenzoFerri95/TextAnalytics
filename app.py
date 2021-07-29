@@ -11,7 +11,6 @@ def index():
 
 @app.route('/page1')
 def page1():
-    header="Primo Header"
     description = """
     Prima descrizione
     """
@@ -20,14 +19,13 @@ def page1():
     
     return render_template('base.html',
                            title = "Page1",
-                           header = header,
+                           header = "Primo Header",
                            graphJSON = base_plot,
                            description = description
                            )
 
 @app.route('/page2')
 def page2():
-    header="Secondo Header"
     description = """
     Seconda descrizione
     """
@@ -36,7 +34,7 @@ def page2():
     
     return render_template('base.html',
                            title = "Page2",
-                           header = header,
+                           header = "Secondo Header",
                            graphJSON = base_plot,
                            description = description
                            )
