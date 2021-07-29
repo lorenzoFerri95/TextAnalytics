@@ -1,7 +1,7 @@
 from db_connection import session_scope, engine
-from models.base import Base
+from models.database.base import Base
 
-from models.tweet import Tweet
+from models.database.tweet import Tweet
 from tweepy.streaming import StreamListener
 import logging
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer

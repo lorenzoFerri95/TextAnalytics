@@ -1,26 +1,50 @@
 from flask import Flask, render_template, request
-import pandas as pd
-import json
-from plotly.utils import PlotlyJSONEncoder
 import plotly.express as px
+from models.plots.GDP import gdp
 
 app = Flask(__name__)
 
-@app.route('/callback', methods=['POST', 'GET'])
-def cb():
-    return gm(request.args.get('data'))
-   
+
 @app.route('/')
 def index():
-    return render_template('index.html',  graphJSON=gm())
+    return render_template('index.html')
 
-def gm(country='Italy'):
-    df = pd.DataFrame(px.data.gapminder())
+@app.route('/page1')
+def page1():
+    header="Primo Header"
+    description = """
+    Prima descrizione
+    """
+    base_plot = gdp(px.data.gapminder())
+    
+    
+    return render_template('base.html',
+                           graphJSON = base_plot,
+                           header = header,
+                           description = description
+                           )
 
-    fig = px.line(df[df['country']==country], x="year", y="gdpPercap")
+@app.route('/page2')
+def page2():
+    header="Secondo Header"
+    description = """
+    Seconda descrizione
+    """
+    base_plot = gdp(px.data.gapminder())
+    
+    
+    return render_template('base.html',
+                           graphJSON = base_plot,
+                           header = header,
+                           description = description
+                           )
 
-    graphJSON = json.dumps(fig, cls=PlotlyJSONEncoder)
-    return graphJSON
+
+
+@app.route('/page1/update-gdp-plot', methods=['POST', 'GET'])
+def update_gdp_plot():
+    return gdp(px.data.gapminder(), request.args.get('data') )
+
 
 
 if __name__ == "__main__":
