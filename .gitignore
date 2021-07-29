@@ -1,0 +1,9 @@
+# qui ci vanno le regex per i file che vogliamo siano ignorati da git  (* sta per "qualsiasi cosa")
+
+__pycache__
+Logs
+.sh
+.venv
+.env
+*.pyc
+.ipynb_checkpoints
