@@ -1,14 +1,20 @@
-from db_connection import session_scope, engine
-from models.database.base import Base
+#from app.configuration.db_connection import session_scope, engine
+#from app.models.base import Base
 
-from models.database.tweet import Tweet
+
+from app import db
+
+from app.models.tweet import Tweet
 from tweepy.streaming import StreamListener
 import logging
+
+#from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from textblob import TextBlob
+
 
 logger = logging.getLogger(__name__)
 
+# Base.metadata.create_all(bind=engine)   # crea le tabelle definite nei  models  se esse non esistono
 
 
 class TweetListener(StreamListener):
@@ -16,8 +22,6 @@ class TweetListener(StreamListener):
     def __init__(self, keywords):
         
         StreamListener.__init__(self)
-        
-        Base.metadata.create_all(bind=engine)   # crea le tabelle definite nei  models  se esse non esistono
         
         self.keywords = keywords
         self.sentiment_model = SentimentIntensityAnalyzer()  # o  TextBlob()
@@ -62,13 +66,24 @@ class TweetListener(StreamListener):
         logger.warning('Streaming error (status code {})'.format(status_code))
 
     def insert_tweet(self, tweet):
-        """inserisce il tweet nel DB usando la sessione definita in  db_connection"""
+        """inserisce un tweet alla volta nel DB man mano che sopraggiungono in real time"""
         try:
+            db.session.add(tweet)
+            db.session.commit()    # se non ci sono errori si committa
+        except Exception as e:
+            logger.warning('Unable to insert tweet: {}'.format(e))
+            db.session.rollback()  # se c'è un errore si elimina l'ultima sessione (rollback)
+            raise
+        finally:
+            db.session.close()     # in ognuno dei casi precedenti la connessione viene sempre chiusa, per ogni tweet
+        
+        
+        """try:
             with session_scope() as sess:
                 sess.add(tweet) # aggiungiamo il tweet
         except Exception as e:
             logger.warning('Unable to insert tweet: {}'.format(e))
-
+        """
     def check_keyword(self, body):
         """checka quale keyword è presente nel tweet, in modo da inserirla nel DB"""
         for keyword in self.keywords:

@@ -1,8 +1,9 @@
 
+from app import db
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float
-from .base import Base
+#from .base import Base
 
-class Tweet(Base):
+class Tweet(db.Model):
     __tablename__ = 'tweets'
     id = Column(Integer, primary_key=True)
     body = Column(String(1000), nullable=False)

@@ -1,51 +1,8 @@
-from flask import Flask, render_template, request
-import plotly.express as px
-from models.plots.GDP import gdp
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/page1')
-def page1():
-    description = """
-    Prima descrizione
-    """
-    base_plot = gdp(px.data.gapminder())
-    
-    
-    return render_template('base.html',
-                           title = "Page1",
-                           header = "Primo Header",
-                           graphJSON = base_plot,
-                           description = description
-                           )
-
-@app.route('/page2')
-def page2():
-    description = """
-    Seconda descrizione
-    """
-    base_plot = gdp(px.data.gapminder())
-    
-    
-    return render_template('base.html',
-                           title = "Page2",
-                           header = "Secondo Header",
-                           graphJSON = base_plot,
-                           description = description
-                           )
-
-
-
-@app.route('/page1/update-gdp-plot', methods=['POST', 'GET'])
-def update_gdp_plot():
-    return gdp(px.data.gapminder(), request.args.get('data') )
-
+from run_stream import run_streaming
+from app import app
 
 
 if __name__ == "__main__":
+
     app.run(debug=True)
+    run_streaming()

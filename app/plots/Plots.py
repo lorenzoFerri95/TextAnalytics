@@ -5,7 +5,7 @@ from plotly.utils import PlotlyJSONEncoder
 import plotly.express as px
 
 
-def gdp(data, country='Italy'):
+def gdp_plot(data, country='Italy'):
     df = pd.DataFrame(data)
 
     fig = px.line(df[df['country']==country], x="year", y="gdpPercap")
