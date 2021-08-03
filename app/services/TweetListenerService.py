@@ -1,20 +1,13 @@
-#from app.configuration.db_connection import session_scope, engine
-#from app.models.base import Base
-
-
 from app import db
 
 from app.models.tweet import Tweet
 from tweepy.streaming import StreamListener
-import logging
 
 #from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-
+import logging
 logger = logging.getLogger(__name__)
-
-# Base.metadata.create_all(bind=engine)   # crea le tabelle definite nei  models  se esse non esistono
 
 
 class TweetListener(StreamListener):
@@ -74,16 +67,7 @@ class TweetListener(StreamListener):
             logger.warning('Unable to insert tweet: {}'.format(e))
             db.session.rollback()  # se c'è un errore si elimina l'ultima sessione (rollback)
             raise
-        finally:
-            db.session.close()     # in ognuno dei casi precedenti la connessione viene sempre chiusa, per ogni tweet
-        
-        
-        """try:
-            with session_scope() as sess:
-                sess.add(tweet) # aggiungiamo il tweet
-        except Exception as e:
-            logger.warning('Unable to insert tweet: {}'.format(e))
-        """
+
     def check_keyword(self, body):
         """checka quale keyword è presente nel tweet, in modo da inserirla nel DB"""
         for keyword in self.keywords:

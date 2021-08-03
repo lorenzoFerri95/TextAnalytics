@@ -1,18 +1,17 @@
 
 from app import db
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float
-#from .base import Base
+from datetime import datetime
 
 class Tweet(db.Model):
     __tablename__ = 'tweets'
-    id = Column(Integer, primary_key=True)
-    body = Column(String(1000), nullable=False)
-    keyword = Column(String(256), nullable=False, index=True)
-    tweet_date = Column(DateTime, nullable=False)
-    location = Column(String(100))
-    verified_user = Column(Boolean)
-    followers = Column(Integer)
-    sentiment = Column(Float)
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text, nullable=False)
+    keyword = db.Column(db.String(256), nullable=False)
+    tweet_date = db.Column(db.DateTime, nullable=False, index=True, default=datetime.utcnow)
+    location = db.Column(db.String(100))
+    verified_user = db.Column(db.Boolean)
+    followers = db.Column(db.Integer)
+    sentiment = db.Column(db.Float)
 
     def __init__(self, body, keyword, tweet_date, location, verified_user, followers, sentiment):
         self.body = body

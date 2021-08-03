@@ -9,6 +9,7 @@ from app.plots.Plots import gdp_plot
 
 
 @app.route('/')
+@app.route('/home')
 def index():
     return render_template('index.html')
 
