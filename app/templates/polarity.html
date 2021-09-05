@@ -1,0 +1,33 @@
+{% extends "layout/base.html" %}
+
+
+{% block head %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+{% endblock head %}
+
+
+{% block body %}
+
+    <h1 class="h1">{{header}}</h1>
+
+    <br>
+
+    <div class="container">
+        <button type="button" class="btn btn-primary" onclick=window.location.href='{{ url_for( 'polarity' ) }}'>Update</button>
+        <button type="button" class="btn btn-danger" onclick=window.location.href='{{ url_for( 'clear_db' ) }}' method="DELETE">Clear</button>
+
+        <div id="chart" class="chart"></div>
+    </div>
+    
+
+{% endblock body %}
+
+
+{% block script %}
+    <script>
+        Plotly.newPlot('chart', {{ graphJSON | safe }}, {});
+    </script>
+{% endblock script %}
+

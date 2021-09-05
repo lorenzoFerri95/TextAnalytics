@@ -1,9 +1,10 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 
-from app import app
+from app import app, db
 
+import pandas as pd
 import plotly.express as px
-from app.plots.Plots import gdp_plot
+from app.plots.Plots import polarity_plot
 
 
 
@@ -13,39 +14,45 @@ from app.plots.Plots import gdp_plot
 def index():
     return render_template('index.html')
 
-@app.route('/page1')
-def page1():
-    description = """
-    Prima descrizione
-    """
-    base_plot = gdp_plot(px.data.gapminder())
+
+@app.route('/polarity')
+def polarity():
+
+    data = db.session.execute("""
+        SELECT tweet_date, polarity
+        FROM tweets
+        WHERE keyword = :keyword1 OR keyword = :keyword2
+        """,
+        {'keyword1': "Bitcoin",
+         'keyword2':"bitcoin"})
+            
+    df = pd.DataFrame(data, columns=["date", "polarity"])
     
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.set_index(['date'])
     
-    return render_template('base.html',
-                           title = "Page1",
-                           header = "Primo Header",
-                           graphJSON = base_plot,
-                           description = description
+    agg_dict = {"polarity": "median"}
+    df = df.groupby(df.index.strftime('%Y-%m-%d %H:%M:00')).agg(agg_dict)
+    
+    df["date"] = df.index
+    
+    plot = polarity_plot(df)
+    
+    return render_template('polarity.html',
+                           title = "Polarity",
+                           header = "Real Time Polarity",
+                           graphJSON = plot
                            )
 
-@app.route('/page2')
-def page2():
-    description = """
-    Seconda descrizione
-    """
-    base_plot = gdp_plot(px.data.gapminder())
+
+@app.route('/clear_db')
+def clear_db():
+
+    db.session.execute("""
+        DELETE
+        FROM tweets
+        """)
     
-    
-    return render_template('base.html',
-                           title = "Page2",
-                           header = "Secondo Header",
-                           graphJSON = base_plot,
-                           description = description
-                           )
-
-
-
-@app.route('/page1/update-gdp-plot', methods=['POST', 'GET'])
-def update_gdp_plot():
-    return gdp_plot(px.data.gapminder(), request.args.get('data') )
-
+    db.session.commit()
+        
+    return redirect(url_for('polarity'))

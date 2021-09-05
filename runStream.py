@@ -17,4 +17,4 @@ def run_streaming(keywords):
 
 if __name__ == "__main__":
 
-    run_streaming(keywords = ["Crypto", "Bitcoin"])
+    run_streaming(keywords = ["Bitcoin", "bitcoin"])

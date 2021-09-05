@@ -41,13 +41,13 @@ class TweetListener(StreamListener):
         if not keyword:
             return
         
-        sentiment = self.sentiment_model.polarity_scores(text).get('compound')  # calcoliamo il sentiment score
-        if sentiment == 0:
-            return  # se il sentiment è 0 non inseriamo il tweet perché altrimenti la grande maggioranza sarebbero tutti 0
+        polarity = self.sentiment_model.polarity_scores(text).get('compound')  # calcoliamo il sentiment score
+        if polarity >= -0.3 and polarity <= 0.5:
+            return  # non inseriamo le polarity neutrali
         
-        tweet = Tweet(body=text, keyword=keyword, tweet_date=status.created_at, location=location,
+        tweet = Tweet(body=text, keyword=keyword, tweet_date=status.created_at,
                       verified_user=status.user.verified, followers=status.user.followers_count,
-                      sentiment=sentiment)
+                      polarity=polarity)
         self.insert_tweet(tweet)
 
     def on_error(self, status_code):

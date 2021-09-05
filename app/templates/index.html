@@ -1,13 +1,12 @@
-{% extends "layout.html" %}
+{% extends "layout/base.html" %}
 
 
 {% block body %}
-    <h1 style="background:lightblue;padding:10px">
-            Plotly Chart Demo
-    </h1>
+    <h1 class="h1">Text Analytics Project</h1>
+    <h3 class="h3">by Lorenzo Ferri and Roberta Pappolla</h3>
 
-    <p>Click to see charts on different pages</p>
-
-    <h1><a href="page1">GDP in Europe</a></h1>
-    <h1><a href="page2">Vegetables in Europe</a></h1>
-{% endblock %}
+    <p class="p">
+        una pagina web con un grafico della polarity dei testi provenienti da twitter in tempo reale.
+    </p>
+    
+{% endblock body %}

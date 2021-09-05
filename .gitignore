@@ -7,3 +7,5 @@ Logs
 .env
 *.pyc
 .ipynb_checkpoints
+models*
+datasets
