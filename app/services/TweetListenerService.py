@@ -3,7 +3,6 @@ from app import db
 from app.models.tweet import Tweet
 from tweepy.streaming import StreamListener
 
-#from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 import logging
@@ -17,7 +16,7 @@ class TweetListener(StreamListener):
         StreamListener.__init__(self)
         
         self.keywords = keywords
-        self.sentiment_model = SentimentIntensityAnalyzer()  # o  TextBlob()
+        self.sentiment_model = SentimentIntensityAnalyzer()
 
     def on_status(self, status):
         """metodo chiamato quando arriva un nuovo Tweet, i cui dati vengono storati in  status"""
@@ -33,9 +32,11 @@ class TweetListener(StreamListener):
         else:
             text = status.text
         
+        """
         location = status.coordinates
         if location:
             location = str(status.coordinates['coordinates'])   # otteniamo la location string se presente
+        """
         
         keyword = self.check_keyword(text)  # checkiamo la keyword
         if not keyword:

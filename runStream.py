@@ -5,7 +5,6 @@ from tweepy import Stream
 
 def run_streaming(keywords):
     
-    keywords = [word.strip(' ') for word in keywords]
     listener = TweetListener(keywords)
     
     twitterAuth = OAuthHandler(app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"])

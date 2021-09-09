@@ -21,10 +21,10 @@ def polarity():
     data = db.session.execute("""
         SELECT tweet_date, polarity
         FROM tweets
-        WHERE keyword = :keyword1 OR keyword = :keyword2
+        WHERE polarity <= :lub OR polarity >= :glb
         """,
-        {'keyword1': "Bitcoin",
-         'keyword2':"bitcoin"})
+        {'lub': -0.5,
+         'glb': 0.7})
             
     df = pd.DataFrame(data, columns=["date", "polarity"])
     
